@@ -150,19 +150,6 @@ angular.module('animations.create', [])
 String.prototype.cap = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
-var bounces = angular.module('animations.bounces', ['animations.create']);
-
-bounces.animation('.bounce-normal', function (Animation){
-  var effect = {
-    first: {opacity: 0, transform: 'scale(.3)'},
-    mid: {opacity: 1, transform: 'scale(1.05)'},
-    third: {transform: 'scale(.9)'},
-    end: {opacity: 1, transform: 'scale(1)'},
-    duration: 0.3
-  };
-
-  return new Animation.bounce(effect);
-});
 var fades = angular.module('animations.fades', ['animations.create']);
 
 
@@ -263,6 +250,19 @@ fades.animation('.fade-up-big', function (Animation){
   };
 
   return new Animation.fade(effect);
+});
+var bounces = angular.module('animations.bounces', ['animations.create']);
+
+bounces.animation('.bounce-normal', function (Animation){
+  var effect = {
+    first: {opacity: 0, transform: 'scale(.3)'},
+    mid: {opacity: 1, transform: 'scale(1.05)'},
+    third: {transform: 'scale(.9)'},
+    end: {opacity: 1, transform: 'scale(1)'},
+    duration: 0.3
+  };
+
+  return new Animation.bounce(effect);
 });
 var animate = angular.module('animations',
   [
