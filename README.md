@@ -1,7 +1,7 @@
-ngAnimations.js
+ng-Fx
 ===============
 
-A conversion of animate.css into angular ngAnimate javascript. ALl animations are don in Javascript, no CSS.
+A conversion of animate.css into angular ngAnimate javascript. All animations are done in Javascript, no CSS.
 
 
 ## How to use it
