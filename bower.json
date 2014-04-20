@@ -26,6 +26,7 @@
     "angular-animate": "~1.2.16",
     "angular": "*",
     "gsap": "~1.11.6",
-    "bootstrap-css-only": "*"
+    "bootstrap-css-only": "*",
+    "ng-Fx": "~0.1.7"
   }
 }
