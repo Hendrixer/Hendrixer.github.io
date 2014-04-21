@@ -25,6 +25,6 @@
     "commit": "c9edeb2e9df442f4aad9551ab9f5c598112ca45e"
   },
   "_source": "git://github.com/fyockm/bootstrap-css-only.git",
-  "_target": "~3.1.1",
+  "_target": "*",
   "_originalSource": "bootstrap-css-only"
 }

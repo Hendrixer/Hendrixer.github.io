@@ -12,15 +12,12 @@ angular.module('fx.animations.assist', [])
     },
 
     parseClassList: function(element){
-
       var list = element[0].classList,
-          results = {trigger: false, duration: 0.3};
+          results = {trigger: false, duration: 0.3, ease: $window.Back};
       angular.forEach(list, function (className){
         if(className.slice(0,9) === 'fx-easing'){
-          var ease = $filter('cap')(className.slice(10));
-          results.ease = $window[ease] ? ease : 'Elastic';
-        } else {
-          results.ease = 'Cubic';
+          var ease = className.slice(10);
+          results.ease = $window[$filter('cap')(ease)] ? $window[$filter('cap')(ease)] : $window.Elastic;
         }
         if(className === 'fx-trigger'){
           results.trigger = true;
@@ -56,9 +53,6 @@ angular.module('fx.animations.assist', [])
 }]);
 angular.module('fx.animations.create', ['fx.animations.assist'])
 
-
-
-
 .factory('FadeAnimation', ['$timeout', '$window', 'Assist', function ($timeout, $window, Assist){
   return function (effect){
     var inEffect        = effect.enter,
@@ -67,22 +61,22 @@ angular.module('fx.animations.create', ['fx.animations.assist'])
         fx_type         = effect.animation,
         timeoutKey      = '$$fxTimer';
 
-
-
     this.enter = function(element, done){
       var options = Assist.parseClassList(element);
       options.motion = 'enter';
       options.animation = fx_type;
       options.timeoutKey = timeoutKey;
       Assist.addTimer(options, element, done);
-      inEffect.ease = $window[options.ease].easeOut;
+      inEffect.ease = options.ease.easeOut;
       TweenMax.set(element, outEffect);
       TweenMax.to(element, options.duration, inEffect);
-
       return function (canceled){
         var timer = element.data(timeoutKey);
-        if(timer){
-          Assist.removeTimer(element, timeoutKey, timer);
+        if(canceled){
+          if(timer){
+            Assist.removeTimer(element, timeoutKey, timer);
+          }
+
         }
       };
     };
@@ -93,13 +87,15 @@ angular.module('fx.animations.create', ['fx.animations.assist'])
       options.animation = fx_type;
       options.timeoutKey = timeoutKey;
       Assist.addTimer(options, element, done);
-      outEffectLeave.ease = $window[options.ease].easeIn;
+      outEffectLeave.ease = options.ease.easeIn;
       TweenMax.set(element, inEffect);
       TweenMax.to(element, options.duration, outEffectLeave);
       return function (canceled){
         var timer = element.data(timeoutKey);
-        if(timer){
-          Assist.removeTimer(element, timeoutKey, timer);
+        if(canceled){
+          if(timer){
+            Assist.removeTimer(element, timeoutKey, timer);
+          }
         }
       };
     };
@@ -219,12 +215,17 @@ angular.module('fx.animations.create', ['fx.animations.assist'])
         };
       };
       this.move = function(element, done){
-        end.onComplete = done;
+        var options = Assist.parseClassList(element);
+        options.motion = 'leave';
+        options.animation = fx_type;
+        options.timeoutKey = timeoutKey;
+        options.stagger = true;
+        Assist.addTimer(options, element, done);
         var move = new TimelineMax();
         move.to(element, start);
-        move.to(element, duration, mid);
-        move.to(element, duration, third);
-        move.to(element, duration, end);
+        move.to(element, options.duration, mid);
+        move.to(element, options.duration, third);
+        move.to(element, options.duration, end);
         return function (canceled) {
           if(canceled){
             move.kill();
@@ -233,15 +234,104 @@ angular.module('fx.animations.create', ['fx.animations.assist'])
 
       };
       this.beforeAddClass = function(element, className, done){
-
+        if(className === 'ng-hide' && className.hide){
+          var options = Assist.parseClassList(element);
+          options.motion = 'beforeAddClass';
+          options.animation = fx_type;
+          options.timeoutKey = timeoutKey;
+          Assist.addTimer(options, element, done);
+          var bac = new TimelineMax();
+          bac.to(element, end);
+          bac.to(element, options.duration, third);
+          bac.to(element, options.duration, mid);
+          bac.to(element, options.duration, start);
+          return function (canceled){
+            if(canceled){
+              var timer = element.data(timeoutKey);
+              if(timer){
+                Assist.removeTimer(element, timeoutKey, timer);
+              }
+            }
+          };
+        } else {
+          done();
+        }
       };
       this.removeClass = function(element, className, done){
-
+        if(className === 'hg-hide' && className.show){
+          var options = Assist.parseClassList(element);
+          options.motion = 'removeClass';
+          options.animation = fx_type;
+          options.timeoutKey = timeoutKey;
+          var rc = new TimelineMax();
+          rc.to(element, start);
+          rc.to(element, options.duration, mid);
+          rc.to(element, options.duration, third);
+          rc.to(element, options.duration, end);
+          return function (canceled){
+            if(canceled){
+              var timer = element.data(timeoutKey);
+              if(timer){
+                Assist.removeTimer(element, timeoutKey, timer);
+              }
+            }
+          };
+        } else {
+          done();
+        }
       };
     };
 }]);
 
 
+angular.module('fx.animations.bounces', ['fx.animations.create'])
+
+.animation('.fx-bounce-normal', ['BounceAnimation', function (BounceAnimation){
+  var effect = {
+    first: {opacity: 0, transform: 'scale(.3)'},
+    mid: {opacity: 1, transform: 'scale(1.05)'},
+    third: {transform: 'scale(.9)'},
+    end: {opacity: 1, transform: 'scale(1)'},
+    animation: 'bounce-normal'
+  };
+
+  return new BounceAnimation(effect);
+}])
+
+.animation('.fx-bounce-down', ['BounceAnimation', function (BounceAnimation){
+  var effect = {
+    first: {opacity: 0, transform: 'translateY(-2000px)'},
+    mid: {opacity: 1, transform: 'translateY(30px)'},
+    third: {transform: 'translateY(-10px)'},
+    end: {transform: 'translateY(0)'},
+    animation: 'bounce-down'
+  };
+
+  return new BounceAnimation(effect);
+}])
+
+.animation('.fx-bounce-left', ['BounceAnimation', function (BounceAnimation){
+  var effect = {
+    first: {opacity: 0,  transform: 'translateX(-2000px)'},
+    mid: {opacity: 1, transform: 'translateX(30px)'},
+    third: {transform: 'translateX(-10px)'},
+    end: {transform: 'translateX(0)'},
+    animation: 'bounce-left'
+  };
+
+  return new BounceAnimation(effect);
+}])
+
+.animation('.fx-bounce-up', ['BounceAnimation', function (BounceAnimation) {
+  var effect = {
+    first: {opacity: 0,   transform: 'translateY(2000px)'},
+    mid: {opacity: 1, transform: 'translateY(-30px)'},
+    third: {transform: 'translateY(10px)'},
+    end: {transform: 'translateY(0)'},
+    animation: 'bounce-up'
+  };
+  return new BounceAnimation(effect);
+}]);
 angular.module('fx.animations.fades', ['fx.animations.create'])
 
 
@@ -339,59 +429,5 @@ angular.module('fx.animations.fades', ['fx.animations.create'])
 
   return new FadeAnimation(effect);
 }]);
-angular.module('fx.animations.bounces', ['fx.animations.create'])
-
-.animation('.fx-bounce-normal', ['BounceAnimation', function (BounceAnimation){
-  var effect = {
-    first: {opacity: 0, transform: 'scale(.3)'},
-    mid: {opacity: 1, transform: 'scale(1.05)'},
-    third: {transform: 'scale(.9)'},
-    end: {opacity: 1, transform: 'scale(1)'},
-    animation: 'bounce-normal'
-  };
-
-  return new BounceAnimation(effect);
-}])
-
-.animation('.fx-bounce-down', ['BounceAnimation', function (BounceAnimation){
-  var effect = {
-    first: {opacity: 0, transform: 'translateY(-2000px)'},
-    mid: {opacity: 1, transform: 'translateY(30px)'},
-    third: {transform: 'translateY(-10px)'},
-    end: {transform: 'translateY(0)'},
-    animation: 'bounce-down'
-  };
-
-  return new BounceAnimation(effect);
-}])
-
-.animation('.fx-bounce-left', ['BounceAnimation', function (BounceAnimation){
-  var effect = {
-    first: {opacity: 0,  transform: 'translateX(-2000px)'},
-    mid: {opacity: 1, transform: 'translateX(30px)'},
-    third: {transform: 'translateX(-10px)'},
-    end: {transform: 'translateX(0)'},
-    animation: 'bounce-left'
-  };
-
-  return new BounceAnimation(effect);
-}])
-
-.animation('.fx-bounce-up', ['BounceAnimation', function (BounceAnimation) {
-  var effect = {
-    first: {opacity: 0,   transform: 'translateY(2000px)'},
-    mid: {opacity: 1, transform: 'translateY(-30px)'},
-    third: {transform: 'translateY(10px)'},
-    end: {transform: 'translateY(0)'},
-    animation: 'bounce-up'
-  };
-  return new BounceAnimation(effect);
-}]);
-angular.module('fx.animations',
-  [
-    'fx.animations.fades',
-    'fx.animations.bounces'
-  ]
-
-);
+angular.module('fx.animations',['fx.animations.fades','fx.animations.bounces']);
 

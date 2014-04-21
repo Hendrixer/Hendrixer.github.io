@@ -1,4 +1,11 @@
-var app = angular.module('app', ['ngAnimate', 'fx.animations', 'ui.bootstrap']);
+var app = angular.module('app', ['ngAnimate', 'fx.animations', 'ui.bootstrap', 'angularytics']);
+
+app.config(function(AngularyticsProvider){
+  AngularyticsProvider.setEventHandlers(['GoogleUniversal']);
+})
+.run(function(Angularytics){
+  Angularytics.init();
+});
 
 app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $timeout, $q){
 
@@ -119,7 +126,7 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
       $scope.demo.addCards(animation);
       cleanOut = $timeout(function(){
         $scope.demo.clean();
-      }, $scope.demo.speed * 6);
+      }, $scope.demo.speed * 6.5);
       playTime = $timeout(function(){
         $scope.demo.play(++index);
       }, $scope.demo.speed * 14);
