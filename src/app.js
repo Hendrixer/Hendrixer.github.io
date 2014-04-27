@@ -22,6 +22,7 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
   }
   $scope.demo.mainAnimation = null;
   $scope.demo.animations = [
+    'rotate-normal',
     'fade-normal',
     'fade-down',
     'fade-down-big',
@@ -34,7 +35,8 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
     'bounce-normal',
     'bounce-down',
     'bounce-left',
-    'bounce-up'
+    'bounce-up',
+    'bounce-right'
   ];
 
   $scope.demo.easings = [
@@ -160,16 +162,4 @@ app.directive('card', function(){
   };
 });
 
-app.directive('remove', [ '$animate', function ($animate){
-  function link(scope, element, attrs){
-    scope.$on('fade-down', function(){
-      console.log('in remove');
-      element.remove();
-    });
-  }
-
-  return {
-    link: link
-  };
-}]);
 

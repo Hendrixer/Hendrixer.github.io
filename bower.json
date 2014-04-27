@@ -27,7 +27,10 @@
     "angular": "*",
     "gsap": "~1.11.6",
     "bootstrap-css-only": "*",
-    "ng-Fx": "~0.2.9",
+    "ng-Fx": "~0.3.3",
     "angularytics": "~0.2.3"
+  },
+  "resolutions": {
+    "ng-Fx": "~0.3.3"
   }
 }
