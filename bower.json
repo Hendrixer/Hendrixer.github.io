@@ -29,8 +29,5 @@
     "bootstrap-css-only": "*",
     "ng-Fx": "~0.3.3",
     "angularytics": "~0.2.3"
-  },
-  "resolutions": {
-    "ng-Fx": "~0.3.3"
   }
 }

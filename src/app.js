@@ -22,7 +22,9 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
   }
   $scope.demo.mainAnimation = null;
   $scope.demo.animations = [
-    'rotate-normal',
+    'rotate-clock',
+    'rotate-counterclock',
+    'rotate-clock-left',
     'fade-normal',
     'fade-down',
     'fade-down-big',
