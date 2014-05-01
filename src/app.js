@@ -11,7 +11,7 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
 
   $scope.demo = {};
   $scope.demo.cards = [];
-  $scope.demo.ease = 'cubic';
+  $scope.demo.ease = 'back';
   $scope.demo.speed = 500;
   $scope.demo.speeds = [100];
   getSpeeds();
