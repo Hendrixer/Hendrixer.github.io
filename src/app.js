@@ -22,6 +22,8 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
   }
   $scope.demo.mainAnimation = null;
   $scope.demo.animations = [
+    'zoom-normal',
+    'rotate-counterclock-up',
     'rotate-clock',
     'rotate-counterclock',
     'rotate-clock-left',

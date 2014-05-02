@@ -27,7 +27,7 @@
     "angular": "*",
     "gsap": "~1.11.6",
     "bootstrap-css-only": "*",
-    "ng-Fx": "~0.3.6",
+    "ng-Fx": "~0.3.7",
     "angularytics": "~0.2.3"
   }
 }
