@@ -21,7 +21,9 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
     }
   }
   $scope.demo.mainAnimation = null;
-  $scope.demo.animations = [
+  var animations = [
+    'zoom-down',
+    'zoom-up',
     'zoom-normal',
     'rotate-counterclock-up',
     'rotate-clock',
@@ -42,6 +44,8 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
     'bounce-up',
     'bounce-right'
   ];
+  $scope.demo.animations = shuffle(animations);
+  console.log($scope.demo.animations);
 
   $scope.demo.easings = [
     'quad',
@@ -135,7 +139,7 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
       }, $scope.demo.speed * 6.5);
       playTime = $timeout(function(){
         $scope.demo.play(++index);
-      }, $scope.demo.speed * 14);
+      }, $scope.demo.speed * 14.5);
     }
   };
 
@@ -147,6 +151,26 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
   $timeout(function(){
     $scope.demo.play(0);
   }, 1500);
+
+  function shuffle (obj) {
+    var rand;
+    var index = 0;
+    var shuffled = [];
+    angular.forEach(obj, function(value) {
+      rand = random(index++);
+      shuffled[index - 1] = shuffled[rand];
+      shuffled[rand] = value;
+    });
+    return shuffled;
+  }
+
+  function random (min, max) {
+    if (max == null) {
+      max = min;
+      min = 0;
+    }
+    return min + Math.floor(Math.random() * (max - min + 1));
+  }
 
 }]);
 

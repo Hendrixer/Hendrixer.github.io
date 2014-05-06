@@ -1,6 +1,6 @@
 {
   "name": "ngAnimations.js",
-  "version": "0.3.7",
+  "version": "0.3.9",
   "homepage": "https://hendrixer.github.io",
   "authors": [
     "Hendrixer"
@@ -38,13 +38,13 @@
   "devDependencies": {
     "angular-mocks": "~1.2.16"
   },
-  "_release": "0.3.7",
+  "_release": "0.3.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.3.7",
-    "commit": "ba6a3e808551c0c50ed8e91080928c4b58f3b6f1"
+    "tag": "v0.3.9",
+    "commit": "e817d1abdd772c52ebf5fe1a42b607f23d09b17b"
   },
   "_source": "git://github.com/Hendrixer/ng-Fx.git",
-  "_target": "~0.3.6",
+  "_target": "~0.3.7",
   "_originalSource": "ng-Fx"
 }

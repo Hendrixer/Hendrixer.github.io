@@ -726,10 +726,18 @@
       animation: 'rotate-counterclock-up'
     };
     return new RotateAnimation(effect);
+  }])
+  .animation('.fx-rotate-clock-up', ['RotateAnimation', function(RotateAnimation){
+    var effect = {
+      start: {opacity: 0, transformOrigin: 'right bottom', transform: 'rotate(-90deg)'},
+      end: {opacity: 1, transformOrigin: 'right bottom', transform: 'rotate(0)'},
+      inverse: {opacity: 0, transformOrigin: 'right bottom', transform: 'rotate(90deg)'},
+      animation: 'rotate-clock-up'
+    };
+    return new RotateAnimation(effect);
   }]);
 
 }(angular));
-
 (function(angular){
   "use strict";
 
@@ -740,6 +748,26 @@
       start: {opacity: 0, transform: 'scale(.3)'},
       end: {opacity: 1, transform: 'scale(1)'},
       animation: 'zoom-normal'
+    };
+
+    return new ZoomAnimation(effect);
+  }])
+
+  .animation('.fx-zoom-down', ['ZoomAnimation', function (ZoomAnimation){
+    var effect = {
+      start: {opacity: 0, transform: 'scale(.1) translateY(-2000px)'},
+      end: {opacity: 1, transform: 'scale(1) translateY(0)'},
+      animation: 'zoom-down'
+    };
+
+    return new ZoomAnimation(effect);
+  }])
+
+  .animation('.fx-zoom-up', ['ZoomAnimation', function (ZoomAnimation){
+    var effect = {
+      start: {opacity: 0, transform: "scale(.1) translateY(2000px)"},
+      end: {opacity: 1, transform: "scale(1) translateY(0)"},
+      animation: 'zoom-up'
     };
 
     return new ZoomAnimation(effect);
