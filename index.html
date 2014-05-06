@@ -23,8 +23,8 @@
         <div id="sidebar-wrapper">
           <h2 class="side-bar-header">Animations</h2>
           <div id='side-bar-scroll'>
-            <div ng-repeat='animation in demo.animations' ng-class="{'animation-link': true,'active': animation === demo.mainAnimation}">
-              <a id='{{ animation }}'href ng-click='demo.addCards(animation)'>{{ animation }}</a>
+            <div ng-repeat='animation in demo.animations' ng-click='demo.addCards(animation)' ng-class="{'animation-link': true,'active': animation === demo.mainAnimation}">
+              <a id='{{ animation }}'href >{{ animation }}</a>
             </div>
           </div>
           <h2 class="side-bar-header name">Scott Moss</h2>
