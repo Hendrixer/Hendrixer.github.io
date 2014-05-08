@@ -8,7 +8,8 @@ app.config(function(AngularyticsProvider){
 });
 
 app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $timeout, $q){
-
+  var cleanOut;
+  var playTime;
   $scope.demo = {};
   $scope.demo.cards = [];
   $scope.demo.ease = 'back';
@@ -22,6 +23,8 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
   }
   $scope.demo.mainAnimation = null;
   var animations = [
+    'zoom-right',
+    'zoom-left',
     'zoom-down',
     'zoom-up',
     'zoom-normal',
@@ -45,8 +48,6 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
     'bounce-right'
   ];
   $scope.demo.animations = shuffle(animations);
-  console.log($scope.demo.animations);
-
   $scope.demo.easings = [
     'quad',
     'cubic',
@@ -61,7 +62,13 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
     'sine'
   ];
 
-
+  $scope.demo.clear = function(animation){
+    $scope.demo.stop();
+    var cache = $scope.demo.animations;
+    $scope.animations = [];
+    $scope.demo.animations = cache;
+    $scope.demo.addCards(animation);
+  };
   $scope.demo.setSpeed = function(speed){
     $scope.demo.speed = speed;
   };
@@ -70,8 +77,7 @@ app.controller('MainController', ['$scope', '$timeout', '$q', function($scope, $
     $scope.demo.ease = ease;
   };
 
-  var cleanOut;
-  var playTime;
+
 
   function populate(animation){
     if(cleanOut){
@@ -187,6 +193,30 @@ app.directive('card', function(){
       '<h4 class="card-header">{{ title }}</h4>'+
       '<div class="card-content" ng-transclude></div>'+
     '</div>'
+  };
+});
+
+app.directive('anchor', function(){
+  return function ($scope){
+
+    $scope.$watch('$parent.demo.mainAnimation', function(val){
+      if($scope.animation === val){
+        $scope.$emit('scroll',$scope.$parent.demo.animations.indexOf($scope.animation));
+      }
+    });
+  };
+});
+
+app.directive('scroll', function(){
+  return function ($scope, el){
+    $scope.$on('scroll', function(index){
+      var position = index.targetScope.$index;
+      if(position > 1){
+        var scrollWindow = el.prop('scrollHeight');
+        var to = scrollWindow - (position * 20);
+        el.prop('scrollTop', scrollWindow - to);
+      }
+    });
   };
 });
 
